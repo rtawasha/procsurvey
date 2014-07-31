@@ -28,7 +28,7 @@ proc logistic data=campaign1 desc;
 model DV=&var / STB PARMLABEL;
 
 /*ODS ouptut for campaign 1 */
-ods output=parameterestimates=est_campaign1 (keep = Variable Estimate StdErr  /*keeping 3 variables only*/
+ods output parameterestimates=est_campaign1 (keep = Variable Estimate StdErr  /*keeping 3 variables only*/
                                             rename = (Estimate=Est_Campaign1 StdErr=StdErr_campaign1));
 run;
 
@@ -38,7 +38,7 @@ proc logistic data=campaign2 desc;
 model DV=&var / STB PARMLABEL;
 
 /*ODS ouptut for campaign 2 */
-ods output=parameterestimates=est_campaign2 (keep = Variable Estimate StdErr  /*keeping 3 variables only*/
+ods output parameterestimates=est_campaign2 (keep = Variable Estimate StdErr  /*keeping 3 variables only*/
                                             rename = (Estimate=Est_Campaign2 StdErr=StdErr_campaign2));
 run;
 
@@ -56,10 +56,9 @@ data &var._campaing2;
 run;
 
 
-   
 proc sql;
    create table &var._cl_2 as
-   select a.variable as Variable length = 15, a.Est_campaign1, b.Est_campaign2, a.StdErr_campaign1, b.StdErr_campaign2&var
+   select a.variable as Variable length = 15, a.Est_campaign1, b.Est_campaign2, a.StdErr_campaign1,   b.StdErr_campaign2&var
    from &var._campaign1 as a,
         &var._campaing2 as b
   where a.Variable = b.Variable;
@@ -106,7 +105,7 @@ ods html file = "var_check_by_cmpn.xls" style = minimal;
 proc print data = var_check_by_cmpn; 
 run;
 
-odshtml close;
+ods html close;
 
 
 
